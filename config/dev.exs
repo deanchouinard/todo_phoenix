@@ -38,5 +38,6 @@ config :todo, Todo.Repo,
   username: "postgres",
   password: "postgres",
   database: "todo_dev",
-  hostname: "172.19.40.183",
+  #  hostname: "172.19.40.183",
+  hostname: "localhost",
   pool_size: 10
