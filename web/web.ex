@@ -36,6 +36,7 @@ defmodule Todo.Web do
 
       import Todo.Router.Helpers
       import Todo.Gettext
+      import Todo.Auth, only: [authenticate_user: 2]
     end
   end
 
@@ -58,6 +59,8 @@ defmodule Todo.Web do
   def router do
     quote do
       use Phoenix.Router
+
+      import Todo.Auth, only: [authenticate_user: 2]
     end
   end
 

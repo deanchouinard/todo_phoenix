@@ -22,6 +22,13 @@ defmodule Todo.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
+  scope "/manage", Todo do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/tasks", TaskController
+  end
+
+
   # Other scopes may use custom stacks.
   # scope "/api", Todo do
   #   pipe_through :api
