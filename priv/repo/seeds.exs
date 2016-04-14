@@ -12,6 +12,13 @@
 
 alias Todo.Repo
 alias Todo.Priority
+alias Todo.User
+import Ecto.Query
+
+user_params = %{name: "Deanch", username: "deanch", password: "deanch"}
+changeset = User.registration_changeset(%User{}, user_params)
+Repo.get_by(User, username: "deanch") ||
+  Repo.insert!(changeset)
 
 for priority <- ~w(Low Medium High Ongoing) do
   Repo.get_by(Priority, name: priority) ||
