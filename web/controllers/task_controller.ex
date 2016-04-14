@@ -5,18 +5,30 @@ defmodule Todo.TaskController do
 
   plug :scrub_params, "task" when action in [:create, :update]
 
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn),
+      [conn, conn.params, conn.assigns.current_user])
+  end
+
   def index(conn, _params) do
     tasks = Repo.all(Task)
     render(conn, "index.html", tasks: tasks)
   end
 
-  def new(conn, _params) do
-    changeset = Task.changeset(%Task{})
+  def new(conn, _params, user) do
+    changeset =
+      user
+      |> build_assoc(:tasks)
+      |> Task.changeset()
+
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"task" => task_params}) do
-    changeset = Task.changeset(%Task{}, task_params)
+  def create(conn, %{"task" => task_params, user}) do
+    changeset =
+      user
+      |>  build_assoc(:tasks)
+      |> Task.changeset(task_params)
 
     case Repo.insert(changeset) do
       {:ok, _task} ->
