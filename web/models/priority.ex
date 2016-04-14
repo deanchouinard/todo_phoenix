@@ -1,18 +1,14 @@
-defmodule Todo.Task do
+defmodule Todo.Priority do
   use Todo.Web, :model
 
-  schema "tasks" do
-    field :date, :string
-    field :title, :string
-    field :description, :string
-    belongs_to :user, Todo.User
-    belongs_to :priority, Todo.Priority
+  schema "priorities" do
+    field :name, :string
 
     timestamps
   end
 
-  @required_fields ~w(date title description)
-  @optional_fields ~w(priority_id)
+  @required_fields ~w(name)
+  @optional_fields ~w()
 
   @doc """
   Creates a changeset based on the `model` and `params`.

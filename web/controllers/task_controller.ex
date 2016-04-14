@@ -10,8 +10,8 @@ defmodule Todo.TaskController do
       [conn, conn.params, conn.assigns.current_user])
   end
 
-  def index(conn, _params) do
-    tasks = Repo.all(Task)
+  def index(conn, _params, user) do
+    tasks = Repo.all(user_tasks(user))
     render(conn, "index.html", tasks: tasks)
   end
 
@@ -24,7 +24,7 @@ defmodule Todo.TaskController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"task" => task_params, user}) do
+  def create(conn, %{"task" => task_params}, user) do
     changeset =
       user
       |>  build_assoc(:tasks)
@@ -40,19 +40,19 @@ defmodule Todo.TaskController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    task = Repo.get!(Task, id)
+  def show(conn, %{"id" => id}, user) do
+    task = Repo.get!(user_tasks(user), id)
     render(conn, "show.html", task: task)
   end
 
-  def edit(conn, %{"id" => id}) do
-    task = Repo.get!(Task, id)
+  def edit(conn, %{"id" => id}, user) do
+    task = Repo.get!(user_tasks(user), id)
     changeset = Task.changeset(task)
     render(conn, "edit.html", task: task, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "task" => task_params}) do
-    task = Repo.get!(Task, id)
+  def update(conn, %{"id" => id, "task" => task_params}, user) do
+    task = Repo.get!(user_tasks(user), id)
     changeset = Task.changeset(task, task_params)
 
     case Repo.update(changeset) do
@@ -65,8 +65,8 @@ defmodule Todo.TaskController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    task = Repo.get!(Task, id)
+  def delete(conn, %{"id" => id}, user) do
+    task = Repo.get!(user_tasks(user), id)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
@@ -76,4 +76,9 @@ defmodule Todo.TaskController do
     |> put_flash(:info, "Task deleted successfully.")
     |> redirect(to: task_path(conn, :index))
   end
+
+  defp user_tasks(user) do
+    assoc(user, :tasks)
+  end
+
 end

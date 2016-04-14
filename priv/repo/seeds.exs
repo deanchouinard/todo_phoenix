@@ -9,3 +9,12 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias Todo.Repo
+alias Todo.Priority
+
+for priority <- ~w(Low Medium High Ongoing) do
+  Repo.get_by(Priority, name: priority) ||
+    Repo.insert!(%Priority{name: priority})
+end
+
