@@ -24,6 +24,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :priority_id, "Priority", class: "control-label"  %>
+    <%= select f, :priority_id, @priorities, class: "form-control",
+        prompt: "Choose a category" %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

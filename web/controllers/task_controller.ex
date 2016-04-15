@@ -2,6 +2,9 @@ defmodule Todo.TaskController do
   use Todo.Web, :controller
 
   alias Todo.Task
+  alias Todo.Priority
+
+  plug :load_priorities when action in [:new, :create, :edit, :update]
 
   plug :scrub_params, "task" when action in [:create, :update]
 
@@ -79,6 +82,15 @@ defmodule Todo.TaskController do
 
   defp user_tasks(user) do
     assoc(user, :tasks)
+  end
+
+  defp load_priorities(conn, _) do
+    query =
+      Priority
+      |> Priority.alphabetical
+      |> Priority.names_and_ids
+    priorities = Repo.all query
+    assign(conn, :priorities, priorities)
   end
 
 end
