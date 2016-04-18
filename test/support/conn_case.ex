@@ -26,6 +26,7 @@ defmodule Todo.ConnCase do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Todo.Router.Helpers
+      import Todo.TestHelpers
 
       # The default endpoint for testing
       @endpoint Todo.Endpoint
