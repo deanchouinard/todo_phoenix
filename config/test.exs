@@ -17,3 +17,7 @@ config :todo, Todo.Repo,
   database: "todo_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Speed up testing by reducing hashing
+config :comeonin, :bcrypt_log_rounds, 4
+config :comeonin, :pbkdf2_rounds, 1
